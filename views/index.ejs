@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background-color: black;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 0 auto;
+        color: white;
+        border-radius: 15px;
+      }
+      th, td {
+        border: 1px solid white;
+        padding: 5px;
+        text-align: left;
+        color: white;
+        border-radius: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <table id="sheet-data-table"></table>
+    <form action="" method="POST">
+      <div style="flex-direction: column; display: flex; margin-top: 10px;">
+        <label style="color: white;" for="request">Nimi</label>
+        <input style="width: 20vw;" type="text" name="name" id="name"></input>
+      </div>
+      <div style="flex-direction: column; display: flex; margin-top: 10px;">
+        <label style="color:white" for="name">Vanus</label>
+        <input style="width: 20vw;" type="text" id="year" name="year" />
+      </div>
+      <div style="flex-direction: column; display: flex; margin-top: 10px;">
+        <label style="color:white" for="name">Sugu</label>
+        <input style="width: 20vw;" type="text" id="type" name="type" />
+      </div>
+      <button style="margin-top: 10px;" type="submit">Submit</button>
+    </form>
+
+    <script>
+      const spreadsheetId = '1OAa2H03e0lY3MXnx23yDSN8rHqftkHw51VvvvjC8-Vc';
+      const range = 'Leht1!A1:C';
+  
+      async function fetchData() {
+        const apiKey = 'AIzaSyAfTTByFNNZXo13NZ-8RlTPbrZ1Xo7VeBM';
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.values;
+      }
+  
+      function createTable(data) {
+        const table = document.getElementById('sheet-data-table');
+
+        const headerRow = document.createElement('tr');
+        data[0].forEach(headerCell => {
+          const header = document.createElement('th');
+          header.textContent = headerCell;
+          headerRow.appendChild(header);
+        });
+        table.appendChild(headerRow);
+
+        data.slice(1).forEach(row => {
+          const dataRow = document.createElement('tr');
+          row.forEach(cellValue => {
+            const dataCell = document.createElement('td');
+            dataCell.textContent = cellValue;
+            dataRow.appendChild(dataCell);
+          });
+          table.appendChild(dataRow);
+        });
+      }
+  
+      fetchData().then(data => {
+        if (data) {
+          createTable(data);
+        } else {
+          console.error('No data found in the specified range.');
+        }
+      }).catch(error => {
+        console.error('Error fetching data:', error);
+      });
+
+    </script>
+  </body>
+</html>
