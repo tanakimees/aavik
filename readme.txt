@@ -10,3 +10,9 @@ index.ejs (views folderi sees) pane ka spreadsheetId oma enda spreadsheeti ID'ks
 index.ejs pane apiKey enda google sheets api apiKey
 
 run command - "nodemon index.js"
+
+
+enne npm install -g nodemoni tegemist pead sa alla laadima 3 moduleit. 
+npm install ejs
+npm install googleapis
+npm install express
